@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compute BMI for both females and males using this responsive and easy-to-use Compute BMI Female. Enter your age, gender, height, and weight to get an accurate BMI value and see where you stand in terms of health. This tool supports both US and Metric units, displaying results on a color-coded pie chart to quickly show if you are underweight, normal weight, overweight, or obese. Designed for simplicity and accuracy, it is fully responsive and works well on mobile and desktop devices.">
+    <title>Compute BMI Female - Quick and Easy BMI Calculation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333; /* Black-gray background */
+            color: #e0e0e0;
+        }
+        header, footer {
+            background-color: #2f2f2f; /* Simple black-gray for header and footer */
+            color: #f4f4f4;
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(128, 128, 128, 0.5); /* Gray shadow */
+        }
+        #bmi-calculator {
+            max-width: 810px;
+            background-color: #444444; /* Dark gray for calculator background */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #f4f4f4;
+        }
+        #result-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        @media (max-width: 768px) {
+            #bmi-chart {
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
+    </style>
+	
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Eczar">
+<style>
+body {
+  font-family: "Eczar", serif;
+}
+</style>
+	
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="text-center">
+        <h1>Compute BMI Female</h1>
+        
+    </header>
+
+    <!-- Main Calculator Section -->
+    <main class="container d-flex justify-content-center my-5">
+        <div id="bmi-calculator" class="text-center">
+            <!-- Toggle for Units -->
+            <div class="form-group">
+                <label for="unit-toggle">Select Unit:</label>
+                <select id="unit-toggle" class="form-control">
+                    <option value="us">US Units</option>
+                    <option value="metric">Metric Units</option>
+                </select>
+            </div>
+            
+            <!-- US Units Input -->
+            <div id="us-inputs" class="unit-inputs">
+                <div class="form-group">
+                    <label for="age-us">Age:</label>
+                    <input type="number" id="age-us" class="form-control" placeholder="Enter your age">
+                </div>
+                <div class="form-group">
+                    <label for="gender-us">Gender:</label>
+                    <select id="gender-us" class="form-control">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Height:</label>
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="number" id="height-feet" class="form-control" placeholder="Feet">
+                        </div>
+                        <div class="col">
+                            <input type="number" id="height-inches" class="form-control" placeholder="Inches">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="weight-lbs">Weight (pounds):</label>
+                    <input type="number" id="weight-lbs" class="form-control" placeholder="Pounds">
+                </div>
+            </div>
+            
+            <!-- Metric Units Input -->
+            <div id="metric-inputs" class="unit-inputs" style="display: none;">
+                <div class="form-group">
+                    <label for="age-metric">Age:</label>
+                    <input type="number" id="age-metric" class="form-control" placeholder="Enter your age">
+                </div>
+                <div class="form-group">
+                    <label for="gender-metric">Gender:</label>
+                    <select id="gender-metric" class="form-control">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="height-cm">Height (cm):</label>
+                    <input type="number" id="height-cm" class="form-control" placeholder="Centimeters">
+                </div>
+                <div class="form-group">
+                    <label for="weight-kg">Weight (kg):</label>
+                    <input type="number" id="weight-kg" class="form-control" placeholder="Kilograms">
+                </div>
+            </div>
+            
+            <button onclick="calculateBMI()" class="btn btn-primary mt-3">Calculate BMI</button>
+
+            <!-- Result Section -->
+            <div id="result-section" class="mt-4">
+                <h2>BMI = <span id="bmi-result">?</span></h2>
+                <div class="chart-container">
+                    <canvas id="bmi-chart" width="300" height="163"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<section class="container my-5">
+    <h2 class="text-center">How to Use the Compute BMI Female Calculator</h2>
+    <p class="text-justify">
+        Welcome to the Compute BMI Female Calculator! This easy-to-use tool helps you find out your Body Mass Index (BMI) accurately based on your age, gender, height, and weight. With both Metric and US Units options, this calculator provides flexibility for users worldwide. Simply follow the steps below to get started and learn what your BMI results indicate.
+    </p>
+    
+    <h3>Step-by-Step Guide to Using the BMI Calculator</h3>
+    
+    <h4>Step 1: Select Your Unit Preference</h4>
+    <p>
+        Begin by choosing between the Metric and US Units using the drop-down toggle. Select "US Units" if you prefer feet and pounds, or choose "Metric Units" if you’re more comfortable with centimeters and kilograms.
+    </p>
+    
+    <h4>Step 2: Enter Your Age and Gender</h4>
+    <p>
+        Type your age into the designated field. Next, select your gender as “female” to ensure your results reflect your unique requirements accurately.
+    </p>
+    
+    <h4>Step 3: Input Your Height and Weight</h4>
+    <p>
+        Depending on your unit selection, enter your height in feet and inches or centimeters, and your weight in pounds or kilograms. Precise values will yield the most accurate results.
+    </p>
+    
+    <h4>Step 4: Click “Calculate BMI”</h4>
+    <p>
+        Press the “Calculate BMI” button to get your results instantly. Your BMI value will appear below, along with a color-coded pie chart to show your weight status—underweight, normal, overweight, or obesity.
+    </p>
+    
+    <h4>Step 5: Interpret Your Results</h4>
+    <p>
+        The BMI calculator not only gives you a numerical BMI result but also highlights your category visually with color codes. Check where you fall: a BMI below 18.5 indicates underweight, between 18.5 and 24.9 is normal, 25 to 29.9 suggests overweight, and 30 or above is classified as obesity.
+    </p>
+    
+    <h4>Understanding the Importance of BMI for Women</h4>
+    <p>
+        Tracking BMI is crucial, especially for women, as it provides insights into overall health and helps identify potential health risks. While BMI alone does not measure body fat percentage, it’s a simple tool for understanding weight categories and maintaining a healthy lifestyle.
+    </p>
+    
+    <h4>Health Tips Based on BMI Results</h4>
+    <p>
+        If your BMI indicates underweight, consider consulting a nutritionist to help you reach a balanced diet. A BMI within the normal range is a good sign—maintain it by eating balanced meals and staying active. For those in the overweight or obesity categories, adopting healthier eating habits and regular exercise can significantly improve health.
+    </p>
+</section>
+
+
+    <!-- Footer -->
+    <footer class="text-center">
+        <p>&copy; 2024 Compute BMI Female | Designed for Fitness Awareness</p>
+    </footer>
+
+    <script>
+        document.getElementById("unit-toggle").addEventListener("change", function () {
+            let unit = this.value;
+            document.getElementById("us-inputs").style.display = unit === "us" ? "block" : "none";
+            document.getElementById("metric-inputs").style.display = unit === "metric" ? "block" : "none";
+        });
+
+        function calculateBMI() {
+            let unit = document.getElementById("unit-toggle").value;
+            let bmi = 0;
+
+            if (unit === "us") {
+                let heightFeet = parseFloat(document.getElementById("height-feet").value) || 0;
+                let heightInches = parseFloat(document.getElementById("height-inches").value) || 0;
+                let weightLbs = parseFloat(document.getElementById("weight-lbs").value) || 0;
+                let heightInInches = (heightFeet * 12) + heightInches;
+                bmi = (weightLbs / (heightInInches * heightInInches)) * 703;
+            } else {
+                let heightCm = parseFloat(document.getElementById("height-cm").value) || 0;
+                let weightKg = parseFloat(document.getElementById("weight-kg").value) || 0;
+                let heightM = heightCm / 100;
+                bmi = weightKg / (heightM * heightM);
+            }
+
+            bmi = Math.round(bmi * 10) / 10;
+            document.getElementById("bmi-result").innerText = bmi;
+            displayChart(bmi);
+        }
+
+        function displayChart(bmi) {
+            const ctx = document.getElementById("bmi-chart").getContext("2d");
+
+            const data = {
+                labels: ['Underweight', 'Normal', 'Overweight', 'Obesity'],
+                datasets: [{
+                    data: [bmi <= 18.5 ? bmi : 0, (bmi > 18.5 && bmi <= 24.9) ? bmi : 0, (bmi >= 25 && bmi <= 29.9) ? bmi : 0, bmi >= 30 ? bmi : 0],
+                    backgroundColor: ['#ffcccb', '#98fb98', '#ffd700', '#ff6347']
+                }]
+            };
+
+            if (window.bmiChart) window.bmiChart.destroy();
+
+            window.bmiChart = new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
